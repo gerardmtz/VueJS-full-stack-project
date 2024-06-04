@@ -5,8 +5,8 @@ const User = require('../models/user');
 
 // User registration route
 router.post('/register', (req, res) => {
-    const { username, password } = req.body;
-    const newUser = new User({ username, password });
+    const { username, password, role } = req.body;
+    const newUser = new User({ username, password, role });
 
     newUser.save((err) => {
         if (err) return res.status(500).send('Error registering new user.');
