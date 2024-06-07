@@ -3,6 +3,28 @@ const router = express.Router();
 const Product = require('../models/product');
 const Counter = require('../models/counter');
 
+// Route to get a single product
+router.get('/product/:id?', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+        if (productId) {
+            // if is getting queried and specific product
+            const product = await Product.findOne({ product_id: productId });
+            if (!product) {
+                return res.status(404).send('Product not found');
+            }
+            return res.send(product);
+        } else {
+            // If the product is not specified, all the products are retrieved:
+            const products = await Product.find();
+            return res.send(products);
+        }
+    } catch(err) {
+        return res.status(500).send('Error getting the product(s): ' + err.message);
+    }
+});
+
 // Route to register a single product
 router.post('/register', async (req, res) => {
     const { product_name, price, hasDiscount, discount_price } = req.body;
@@ -10,7 +32,7 @@ router.post('/register', async (req, res) => {
     const newProduct = new Product({
         product_name,
         price,
-        hasDiscount,
+        has_discount,
         discount_price
     });
 
@@ -57,6 +79,22 @@ router.put('/product/:id?', async (req, res) => {
         }
     } catch (err) {
         return res.status(500).send('Error processing request: ' + err.message);
+    }
+});
+
+router.delete('/product/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+        const product = await Product.findOne({ product_id: productId });
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        await Product.findOneAndDelete({ product_id: productId });
+        return res.send({ message: 'Product successfully deleted' });
+    } catch(err) {
+        return res.status(500).send('Error deleting the product: ' + err.message);
     }
 });
 

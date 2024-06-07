@@ -13,7 +13,7 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: true 
     },
-    hasDiscount: {
+    has_discount: {
         type: Boolean,
         required: true 
     },
