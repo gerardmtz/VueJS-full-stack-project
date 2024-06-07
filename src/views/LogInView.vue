@@ -5,12 +5,13 @@
             elevation="8"
             min-width="448"
             rounded="lg">
+            <h1>Log In</h1>
         <div class="text-subtitle-1 text-medium-emphasis">Account</div>
         
         <v-text-field
         density="compact"
-        placeholder="Email Address"
-        prepend-inner-icon="mdi-email-outline"
+        placeholder="Username"
+        prepend-inner-icon="mdi-account-circle"
         variant="outlined">
         </v-text-field>
 
@@ -19,7 +20,7 @@
         </div>
 
         <v-text-field :append-inner-icon="visible ? 'mdi-eyeoff': 'mdi-eye'"
-        :type="visible ? 'text':'password'"
+        :type="visible ? 'text':''"
         density="compact"
         placeholder="Enter your password"
         prepend-inner-icon="mdi-lock-outline"

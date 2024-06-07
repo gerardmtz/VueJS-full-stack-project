@@ -20,11 +20,20 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
 name: 'Grid_home',
 
-data: () => ({
-}),
-}
+data() {
+  return{
+    product:[],
+  };
+},
+  async created(){
+    const result = await axios.get('/products/')
+    const products = result.data;
+    this.products = products;
+  }
+};
 </script>

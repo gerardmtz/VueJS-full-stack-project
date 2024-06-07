@@ -7,10 +7,9 @@
         min-width="25rem"
         rounded="lg" 
         >
-
-            <h1>My account</h1>
+            <h1>Hi! {{ username }}</h1>
                 <v-icon icon="mdi-account-circle" size="x-large"></v-icon>
-            <p>Name:</p>
+            <p>Username:</p>
             <p>E-mail:</p>
         </v-card>
     </div>
