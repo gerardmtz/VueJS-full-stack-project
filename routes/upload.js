@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const Product = require('../models/product');
 
 const router = express.Router();
 
@@ -16,9 +17,26 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Ruta para cargar archivos
-router.post('/', upload.single('file'), (req, res) => {
-    res.send('File uploaded successfully.');
+// Ruta para cargar archivos y actualizar el producto con la URL de la imagen
+router.post('/:id', upload.single('file'), async (req, res) => {
+    const productId = req.params.id;
+    const filePath = req.file.path;
+
+    try {
+        const product = await Product.findOneAndUpdate(
+            { product_id: productId },
+            { image_url: filePath },
+            { new: true }
+        );
+
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        res.send(product);
+    } catch (err) {
+        res.status(500).send('Error updating product with image: ' + err.message);
+    }
 });
 
 module.exports = router;

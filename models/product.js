@@ -20,6 +20,9 @@ const ProductSchema = new mongoose.Schema({
     discount_price: {
         type: Number,
         required: true
+    },
+    image_url: {
+        type: String
     }
 });
 

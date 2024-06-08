@@ -2,7 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const Counter = require('../models/counter');
-const { isAdmin } = require('../middleware/auth');
+const multer = require('multer');
+const path = require('path');
+
+// Set up multer for image upload
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    }
+});
+const upload = multer({ storage });
 
 // Route to get a single product
 router.get('/product/:id?', async (req, res) => {
@@ -10,36 +22,19 @@ router.get('/product/:id?', async (req, res) => {
 
     try {
         if (productId) {
+            // if is getting queried and specific product
             const product = await Product.findOne({ product_id: productId });
             if (!product) {
                 return res.status(404).send('Product not found');
             }
             return res.send(product);
         } else {
+            // If the product is not specified, all the products are retrieved:
             const products = await Product.find();
             return res.send(products);
         }
     } catch(err) {
         return res.status(500).send('Error getting the product(s): ' + err.message);
-    }
-});
-
-// Route to register a single product
-router.post('/register', isAdmin, async (req, res) => {
-    const { product_name, price, has_discount, discount_price } = req.body;
-
-    const newProduct = new Product({
-        product_name,
-        price,
-        has_discount,
-        discount_price
-    });
-
-    try {
-        await newProduct.save();
-        res.status(200).send(newProduct);
-    } catch (err) {
-        res.status(500).send('Error registering new product: ' + err.message);
     }
 });
 
@@ -53,33 +48,39 @@ async function getNextSequence(name) {
     return counter.seq;
 }
 
-// Routes for registrer and update a product
-router.put('/product/:id?', async (req, res) => {
+// Routes for register and update a product
+router.put('/product/:id?', upload.single('file'), async (req, res) => {
     const productId = req.params.id;
     const productData = req.body;
 
+    if (req.file) {
+        productData.image_url = path.join('uploads', req.file.filename);
+    }
+
     try {
         if (productId) {
+            // Update existent product
             const updatedProduct = await Product.findOneAndUpdate({ product_id: productId }, productData, { new: true });
             if (!updatedProduct) {
                 return res.status(404).send('Product not found');
             }
-            return res.status(200).send('Product updated successfully');
+            return res.status(200).send(updatedProduct);
         } else {
+            // Register new product
             const newProductId = await getNextSequence('productid');
             const newProduct = new Product({
                 product_id: newProductId,
                 ...productData
             });
             await newProduct.save();
-            return res.status(201).send('Product registered successfully');
+            return res.status(201).send(newProduct);
         }
     } catch (err) {
         return res.status(500).send('Error processing request: ' + err.message);
     }
 });
 
-router.delete('/product/:id?', async (req, res) => {
+router.delete('/product/:id', async (req, res) => {
     const productId = req.params.id;
 
     try {

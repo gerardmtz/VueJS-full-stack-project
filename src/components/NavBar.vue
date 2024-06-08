@@ -32,7 +32,7 @@
         <v-list-item>
           <!-- Mostrar nombre de usuario si está autenticado -->
           <template v-if="isAuthenticated">
-            <v-list-item> <v-list-item-title>Welcome, {{ user }}</v-list-item-title></v-list-item>
+            <v-list-item> <v-list-item-title>Welcome, {{ user.user.username }}</v-list-item-title></v-list-item>
           </template>
           <!-- Mostrar botones de login y signup si no está autenticado -->
           <template v-slot:append>
