@@ -16,19 +16,20 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// User authentication route
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', async (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(400).send(info.message);
 
-        try {
-            req.login(user, { session: false });
-            res.status(200).send(user.username);
-        } catch (err) {
-            return next(err);
-        }
-    })(req, res, next);
+// Login route
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}));
+
+// Logout route
+router.get('/logout', (req, res) => {
+    req.logout(err => {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 });
 
 module.exports = router;

@@ -2,8 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
-const mongoose = require('./config/database'); // Don't delete this. It's for the server database connection when it starts.
-const multer = require('multer'); // Don't delete this.
+const mongoose = require('./config/database'); // DB Connection
+const multer = require('multer'); // Upload files module
 const path = require('path');
 
 const app = express();
@@ -25,7 +25,7 @@ app.use(passport.session());
 
 require('./config/passport')(passport);
 
-// base routes
+// Base routes
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/upload', require('./routes/upload'));

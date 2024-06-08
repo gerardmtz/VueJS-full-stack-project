@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const Counter = require('../models/counter');
+const { isAdmin } = require('../middleware/auth');
 
 // Route to get a single product
 router.get('/product/:id?', async (req, res) => {
@@ -24,7 +25,7 @@ router.get('/product/:id?', async (req, res) => {
 });
 
 // Route to register a single product
-router.post('/register', async (req, res) => {
+router.post('/register', isAdmin, async (req, res) => {
     const { product_name, price, has_discount, discount_price } = req.body;
 
     const newProduct = new Product({
@@ -78,7 +79,7 @@ router.put('/product/:id?', async (req, res) => {
     }
 });
 
-router.delete('/product/:id', async (req, res) => {
+router.delete('/product/:id?', async (req, res) => {
     const productId = req.params.id;
 
     try {
