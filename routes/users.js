@@ -18,17 +18,23 @@ router.post('/register', async (req, res) => {
 
 
 // Login route
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) { return next(err); }
+        if (!user) { return res.status(401).json({ message: info.message }); }
+
+        req.logIn(user, (err) => {
+            if (err) { return next(err); }
+            return res.json({ message: 'Login successful', user });
+        });
+    })(req, res, next);
+});
 
 // Logout route
 router.get('/logout', (req, res) => {
     req.logout(err => {
         if (err) { return next(err); }
-        res.redirect('/');
+        res.json({ message: 'Logout successful' });
     });
 });
 
