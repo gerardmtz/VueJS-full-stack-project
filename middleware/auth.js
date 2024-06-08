@@ -1,7 +1,5 @@
-/* Middleware file to be used authentication routes */
-// Middleware for rol check
-
 module.exports.isAdmin = function(req, res, next) {
+    console.log('User', req.user);
     if (req.isAuthenticated() && req.user.role === 'admin') {
         return next();
     } else {

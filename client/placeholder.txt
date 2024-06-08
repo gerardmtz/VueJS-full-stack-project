@@ -1,2 +1,0 @@
-Placeholder file to include client
-folder into commit
