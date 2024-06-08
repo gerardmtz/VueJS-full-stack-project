@@ -11,7 +11,7 @@
         <v-col v-for="(product, index) in products" :key="index">
           <router-link :to="{ name: 'item', params: { id: product.product_id } }" style="text-decoration: none;">
             <v-sheet class="pa-2 ma-2 bg-grey-lighten-2 rounded">
-              <v-img :src="product.src" cover></v-img>
+              <v-img :src="`${product.image_url}`" cover></v-img>
               <p class="text-center">{{ product.product_name }}</p>
             </v-sheet>
           </router-link>

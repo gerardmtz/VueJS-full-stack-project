@@ -32,6 +32,9 @@ app.use('/upload', require('./routes/upload'));
 app.use('/admin', require('./routes/admin'));
 app.use('/products', require('./routes/product'));
 
+// Statuc route for'uploads'
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
