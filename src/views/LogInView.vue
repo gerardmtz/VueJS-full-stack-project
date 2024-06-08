@@ -84,6 +84,7 @@
           });
   
           this.$router.push({ name: 'home' });
+          this.$refs.form.reset();
         } catch (error) {
           console.error('Error logging in:', error);
           swal.fire({
