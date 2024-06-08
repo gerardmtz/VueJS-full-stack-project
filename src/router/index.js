@@ -4,7 +4,7 @@ import AboutView from '@/views/AboutView.vue'
 import LogInView from '@/views/LogInView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import ProductView from '@/views/ProductView.vue'
-import UserView from '@/views/UserView.vue'
+import CrudView from '@/views/CrudView.vue'
 
 const routes = [
   {
@@ -34,9 +34,9 @@ const routes = [
     props:true,
   },
   {
-    path: '/user',
-    name: 'user',
-    component: UserView,
+    path: '/crud',
+    name: 'crud',
+    component: CrudView,
   }
 ]
 

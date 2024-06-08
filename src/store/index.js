@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-
+// store/index.js
 const store = createStore({
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null,

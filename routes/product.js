@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
     const newProduct = new Product({
         product_name,
         price,
-        has_discount,
+        hasDiscount,
         discount_price
     });
 

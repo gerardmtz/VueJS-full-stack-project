@@ -24,7 +24,7 @@ router.post('/login', (req, res, next) => {
 
         try {
             req.login(user, { session: false });
-            res.status(200).send('Logged in.');
+            res.status(200).send(user.username);
         } catch (err) {
             return next(err);
         }
