@@ -22,9 +22,11 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "roboto-fontface": "*",
+    "sweetalert2": "^11.11.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuetify": "^3.6.8",
+    "vuex": "^4.0.2",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

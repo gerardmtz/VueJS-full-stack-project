@@ -1,29 +1,25 @@
 <template>
-    <div>
-      <h1>Detalles del Producto</h1>
+    <v-main>
+      <h1 class="text-center">Detalles del Producto</h1>
       <v-container v-if="product">
-        <v-row>
-          <v-col cols="12">
-            <v-img :src="product.src" alt="Imagen del Producto"></v-img>
-          </v-col>
-          <v-col cols="12">
-            <h2>{{ product.product_name }}</h2>
-            <p><strong>Precio:</strong> ${{ product.price }}</p>
-            <p><strong>Tiene Descuento:</strong> {{ product.has_discount ? 'Sí' : 'No' }}</p>
-            <p v-if="product.has_discount"><strong>Precio con Descuento:</strong> ${{ product.discount_price }}</p>
-          </v-col>
-        </v-row>
+        <v-card class="mx-auto" width="50rem" height="20rem">
+          <v-layout row>
+            <div class="d-flex flex-row align-center justify-space-between" style="width: 100%;">
+              <div>
+                <v-card-title class="text-h5">{{ product.product_name }}</v-card-title>
+                <v-card-subtitle>${{ product.price }}.00</v-card-subtitle>
+                <v-card-actions>
+                  <v-btn class="ms-2" size="small" text="Add to cart" variant="outlined"></v-btn>
+                </v-card-actions>
+              </div>
+              <v-avatar class="ma-3" rounded="0" size="300">
+                <v-img src="../assets/imgs/Slide1.png" style="border-radius: .5rem;" cover></v-img>
+              </v-avatar>
+            </div>
+          </v-layout>
+        </v-card>
       </v-container>
-      <v-container v-else>
-        <v-row>
-          <v-col cols="12">
-            <v-alert type="error" dismissible>
-              No se encontraron detalles del producto.
-            </v-alert>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
+    </v-main>
   </template>
   
   <script>
@@ -49,4 +45,11 @@
     }
   };
   </script>
+  
+  <style scoped>
+  .v-card {
+    display: flex;
+    align-items: center;
+  }
+  </style>
   
