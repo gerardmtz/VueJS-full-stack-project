@@ -45,9 +45,6 @@
         <v-list density="compact" nav>
           <v-list-item prepend-icon="mdi-home-city" title="Home" value="home" v-bind:to="{ name: 'home' }"></v-list-item>
           <!-- <v-list-item prepend-icon="mdi-account" title="My Account" value="account" v-bind:to="{name:'user'}"></v-list-item> -->
-          <v-list-item prepend-icon="mdi-cart" title="Shopping" value="Shopping"></v-list-item>
-          <v-list-item prepend-icon="mdi-information" title="About Us" value="About Us"
-            v-bind:to="{ name: 'about' }"></v-list-item>
         </v-list>
       </v-navigation-drawer>
 
