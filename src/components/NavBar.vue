@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <v-card>
-      <v-app-bar :elevation="2" color="indigo lighten-2">
+
+      <v-app-bar :elevation="2" color="indigo lighten-2"  app clipped>
 
         <v-app-bar-title>Tienda FullStack</v-app-bar-title>
 
@@ -50,7 +50,6 @@
             v-bind:to="{ name: 'about' }"></v-list-item>
         </v-list>
       </v-navigation-drawer>
-    </v-card>
 
   </nav>
 </template>
