@@ -28,8 +28,8 @@ const routes = [
     component: SignUpView,
   },
   {
-    path: '/product/:id',
-    name: 'product',
+    path: '/item/:id',
+    name: 'item',
     component: ProductView,
     props:true,
   },

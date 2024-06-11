@@ -31,6 +31,10 @@ app.use('/users', require('./routes/users'));
 app.use('/upload', require('./routes/upload'));
 app.use('/admin', require('./routes/admin'));
 app.use('/products', require('./routes/product'));
+app.use('/reviews', require('./routes/reviews'))
+
+// Statuc route for'uploads'
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

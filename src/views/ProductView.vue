@@ -1,92 +1,83 @@
 <template>
-  <v-container>
-    <v-main>
-    <!-- Formulario para agregar un nuevo elemento -->
-    <v-form @submit.prevent="addElement" ref="form">
-      <v-text-field v-model="nameProduct" label="New Product" required></v-text-field>
-      <v-text-field v-model.number="price" label="Price" type="number" required :rules="priceRules"></v-text-field>
-      <v-select v-model="hasDiscount" :items="['yes', 'no']" label="Has Discount" required></v-select>
-      <v-text-field v-model.number="priceDiscount" label="Price Discounted" type="number" required :rules="priceDiscountRules"></v-text-field>
-      <v-btn type="submit">Add</v-btn>
-    </v-form>
-
-    <!-- Lista de elementos existentes -->
-    <v-list>
-      <v-list-item v-for="element in elements" :key="element.product_id">
-        <v-list-item-content>
-          <v-list-item-title>{{ element.product_name }}</v-list-item-title>
-          <v-list-item-subtitle>Price: {{ element.price }}</v-list-item-subtitle>
-          <v-list-item-subtitle>Has Discount: {{ element.has_discount ? 'Yes' : 'No' }}</v-list-item-subtitle>
-          <v-list-item-subtitle>Discounted Price: {{ element.discount_price }}</v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-btn @click="deleteElement(element.product_id)">Delete</v-btn>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
+  <v-main>
+    <h1 class="text-center">Detalles del Producto</h1>
+    <v-container v-if="product">
+      <v-card class="mx-auto" width="50rem">
+        <v-layout row>
+          <div class="d-flex flex-row align-center justify-space-between" style="width: 100%;">
+            <div>
+              <v-card-title class="text-h5">{{ product.product_name }}</v-card-title>
+              <v-card-subtitle>${{ product.price }}.00</v-card-subtitle>
+              <div v-if="averageRating !== null" class="d-flex align-center">
+                <star-rating :rating="averageRating" :star-size="20" :read-only="true"></star-rating>
+                <span class="ml-2"></span>
+              </div>
+              <v-card-actions>
+                <v-btn class="ms-2" size="small" text="Add to cart" variant="outlined"></v-btn>
+              </v-card-actions>
+            </div>
+            <v-avatar class="ma-3" rounded="0" size="300">
+              <v-img :src="`../${product.image_url}`" style="border-radius: .5rem;" cover></v-img>
+            </v-avatar>
+          </div>
+        </v-layout>
+      </v-card>
+      <write-review :productId="product.product_id"></write-review>
+      <show-review :productId="product.product_id"></show-review>
+    </v-container>
   </v-main>
-  </v-container>
 </template>
 
 <script>
 import axios from 'axios';
+import StarRating from 'vue-star-rating';
+import WriteReview from '@/components/WriteReview.vue'
+import ShowReview from '@/components/ShowReview.vue'
 
 export default {
+  name: 'ProductDetail',
+  components: {
+    WriteReview,
+    ShowReview,
+    StarRating
+  },
   data() {
     return {
-      elements: [],
-      nameProduct: '',
-      price: null,
-      hasDiscount: '',
-      priceDiscount: null,
-      priceRules: [
-        v => !!v || 'Price is required',
-        v => /^[0-9]*$/.test(v) || 'Price must be a number'
-      ],
-      priceDiscountRules: [
-        v => !!v || 'Price Discount is required',
-        v => /^[0-9]*$/.test(v) || 'Price Discount must be a number'
-      ]
+      product: null,
+      averageRating: null,
+      error: null
     };
   },
-  created() {
-    this.loadElements();
+  async created() {
+    const productId = this.$route.params.id;
+    await this.fetchProductDetails(productId);
+    await this.fetchAverageRating(productId);
   },
   methods: {
-    async loadElements() {
+    async fetchProductDetails(productId) {
       try {
-        const response = await axios.get('/products/product/');
-        this.elements = response.data;
+        const response = await axios.get(`/products/product/${productId}`);
+        this.product = response.data;
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching product details:', error);
+        this.error = 'No se encontraron detalles del producto.';
       }
     },
-    async addElement() {
+    async fetchAverageRating(productId) {
       try {
-        const response = await axios.post('/products/register', {
-          product_name: this.nameProduct,
-          price: this.price,
-          has_discount: this.hasDiscount === 'yes',
-          discount_price: this.priceDiscount,
-        });
-        this.elements.push(response.data);
-        this.$refs.form.reset();  // Resetear el formulario después de agregar el producto
-        this.nameProduct = '';
-        this.price = null;
-        this.hasDiscount = '';
-        this.priceDiscount = null;
+        const response = await axios.get(`/reviews/reviews/average/${productId}`);
+        this.averageRating = response.data.averageRating;
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching average rating:', error);
       }
-    },
-    async deleteElement(id) {
-      try {
-        await axios.delete(`/products/product/${id}`);
-        this.elements = this.elements.filter(el => el.product_id !== id);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    },
-  },
+    }
+  }
 };
 </script>
+
+<style scoped>
+.v-card {
+  display: flex;
+  align-items: center;
+}
+</style>

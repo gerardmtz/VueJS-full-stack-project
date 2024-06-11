@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <v-card>
-      <v-app-bar :elevation="2" color="indigo lighten-2">
+
+      <v-app-bar :elevation="2" color="indigo lighten-2"  app clipped>
 
         <v-app-bar-title>Tienda FullStack</v-app-bar-title>
 
@@ -32,7 +32,7 @@
         <v-list-item>
           <!-- Mostrar nombre de usuario si está autenticado -->
           <template v-if="isAuthenticated">
-            <v-list-item> <v-list-item-title>Welcome, {{ user }}</v-list-item-title></v-list-item>
+            <v-list-item> <v-list-item-title>Welcome, {{ user.user.username }}</v-list-item-title></v-list-item>
           </template>
           <!-- Mostrar botones de login y signup si no está autenticado -->
           <template v-slot:append>
@@ -45,12 +45,8 @@
         <v-list density="compact" nav>
           <v-list-item prepend-icon="mdi-home-city" title="Home" value="home" v-bind:to="{ name: 'home' }"></v-list-item>
           <!-- <v-list-item prepend-icon="mdi-account" title="My Account" value="account" v-bind:to="{name:'user'}"></v-list-item> -->
-          <v-list-item prepend-icon="mdi-cart" title="Shopping" value="Shopping"></v-list-item>
-          <v-list-item prepend-icon="mdi-information" title="About Us" value="About Us"
-            v-bind:to="{ name: 'about' }"></v-list-item>
         </v-list>
       </v-navigation-drawer>
-    </v-card>
 
   </nav>
 </template>

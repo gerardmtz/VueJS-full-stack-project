@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-// store/index.js
+
 const store = createStore({
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null,
@@ -32,6 +32,7 @@ const store = createStore({
   getters: {
     isAuthenticated: state => state.isAuthenticated,
     getUser: state => state.user,
+    isAdmin: state => state.user && state.user.user.role === 'admin',
   },
 })
 
