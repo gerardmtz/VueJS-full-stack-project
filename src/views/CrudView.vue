@@ -84,7 +84,7 @@ export default {
           formData.append('file', this.file);
         }
 
-        const response = await axios.post('/products/register', formData, {
+        const response = await axios.put('/products/product/', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
